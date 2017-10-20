@@ -12,7 +12,7 @@ for technology in technology_names:
 def get_time():
 	utc_offset = config.getint("GENERAL", "utc_offset", fallback=0)
 	current_time = datetime.datetime.now(tz=datetime.timezone(datetime.timedelta(hours=utc_offset)))
-	return current_time
+	return time_to_percent(current_time.hour, current_time.minute)
 
 def translate(value, leftMin, leftMax, rightMin, rightMax):
 	leftSpan = leftMax - leftMin
@@ -21,14 +21,14 @@ def translate(value, leftMin, leftMax, rightMin, rightMax):
 	return float( rightMin + (valueScaled * rightSpan) )
 
 def time_to_percent(hours, minutes):
-	return ((hours * 60 * 60) + (minutes * 60)) / 86400.0
+	return ((float(hours) * 60 * 60) + (float(minutes) * 60)) / 86400.0
 
 def get_light_setting():
 	current_time = get_time()
 
 	next_day = 0.0
 	for i, this_time in enumerate(times):
-		if this_time["Hour"] > current_time.hour  or this_time["Hour"] == current_time.hour and this_time["Minute"] >= current_time.minute:
+		if this_time["Start"] > current_time:
 			interval_end = this_time
 			end_index = i
 			break
@@ -36,20 +36,29 @@ def get_light_setting():
 		interval_end = times[0]
 		next_day = 1.0
 		end_index = 0
+
 	for i in range(end_index, -1, -1):
-		if times[i]["Hour"] < current_time.hour  or times[i]["Hour"] == current_time.hour and times[i]["Minute"] <= current_time.minute:
+		if times[i]["Start"] <= current_time:
 			interval_start = times[i]
 			break
 	else:
 		interval_start = times[-1]
 		next_day = 1.0
 
-	now = time_to_percent(current_time.hour, current_time.minute)
-	start = time_to_percent(interval_start["Hour"], interval_start["Minute"])
-	end = time_to_percent(interval_end["Hour"], interval_end["Minute"])
-
-	brightness = translate(now, start, end+next_day, interval_start["Brightness"], interval_end["Brightness"])
-	temperature = translate(now, start, end+next_day, interval_start["Temperature"], interval_end["Temperature"])
+	brightness = translate(
+							current_time,
+							interval_start["Start"],
+							interval_end["Start"]+next_day,
+							interval_start["Brightness"],
+							interval_end["Brightness"]
+						)
+	temperature = translate(
+							current_time,
+							interval_start["Start"],
+							interval_end["Start"]+next_day,
+							interval_start["Temperature"],
+							interval_end["Temperature"]
+						)
 
 	return (brightness, temperature)
 
@@ -74,7 +83,11 @@ times = []
 with open(os.path.expanduser(config.get("GENERAL","schedule_file")), encoding="utf-8") as schedule_file:
 	schedule_file_reader = csv.DictReader(schedule_file, delimiter=';')
 	for entry in schedule_file_reader:
-		times.append({"Hour":int(entry["Hour"]),"Minute":int(entry["Minute"]),"Brightness":float(entry["Brightness"]),"Temperature":float(entry["Temperature"])})
+		times.append({
+						"Start":time_to_percent(entry["Hour"],entry["Minute"]),
+						"Brightness":float(entry["Brightness"]),
+						"Temperature":float(entry["Temperature"])
+					})
 
 heartbeat_time = config.getint("GENERAL", "heartbeat_time")
 
