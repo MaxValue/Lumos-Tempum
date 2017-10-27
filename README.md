@@ -8,6 +8,7 @@ You can set your own rhythm by either editing the provided `.csv` file or by poi
 
 ## Notes
 **This project is HIGHLY alpha currently, sooo - use at your own risk. (I use it though)**
+
 This project does not support daylight saving time yet, because i think DST was a bad idea altogether.
 I do not have to optimal light settings yet, but i will provide them once i know them.
 
@@ -46,7 +47,9 @@ Consumers increasingly want this as they get increasingly aware of the importanc
 
 ## Links
 [LIFX blog entry about setting a circadian rhythm](https://www.lifx.com/blogs/light-matters/19034143-the-lighter-side-of-circadian-rhythms) They have this feature now implemented, though.
+
 [A simple project related to this cause](https://www.instructables.com/id/Hueberry/?ALLSTEPS)
+
 [The dlux research project](http://dlux.cae.drexel.edu/)
 
 ## Roadmap
