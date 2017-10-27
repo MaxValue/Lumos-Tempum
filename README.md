@@ -1,6 +1,10 @@
 # Lumos Tempum
 _a daemon to use your smart lights as aid for your circadian rhythm_
 
+**SIDE NOTE FOR ALL GITHUB NEWBIES: FORKING IS NOT A BACKUP FEATURE**
+Do not do it. If you want to avoid "loosing" this repo, star it, clone it or bookmark it.
+Forking is only used if you want to extend the code.
+
 ## Description
 This software controls your smart lights in order to mimic the optimal daylight rhythm for your (human) body.
 That means, this does not depend on the sun but on the current time.
