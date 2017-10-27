@@ -82,12 +82,13 @@ for technology in technologies.keys():
 times = []
 with open(os.path.expanduser(config.get("GENERAL","schedule_file")), encoding="utf-8") as schedule_file:
 	schedule_file_reader = csv.DictReader(schedule_file, delimiter=';')
-	for entry in schedule_file_reader:
+	for keyframe in schedule_file_reader:
 		times.append({
-						"Start":time_to_percent(entry["Hour"],entry["Minute"]),
-						"Brightness":float(entry["Brightness"]),
-						"Temperature":float(entry["Temperature"])
+						"Start":time_to_percent(keyframe["Hour"],keyframe["Minute"]),
+						"Brightness":float(keyframe["Brightness"]),
+						"Temperature":float(keyframe["Temperature"])
 					})
+times = sorted(times, key=lambda keyframe: keyframe["Start"])
 
 heartbeat_time = config.getint("GENERAL", "heartbeat_time")
 
@@ -102,7 +103,7 @@ while 1:
 		quit()
 
 	target_brightness, target_temperature = get_light_setting()
-	subprocess.call(["systemd-notify","--status=Brightness: {:.2%} Temperature: {:.0f}K".format(target_brightness,target_temperature)])
+	#subprocess.call(["systemd-notify","--status=Brightness: {:.2%} Temperature: {:.0f}K".format(target_brightness,target_temperature)])
 
 	for technology in technologies.keys():
 		if not technologies[technology].set_both(target_brightness, target_temperature):
