@@ -1,9 +1,10 @@
 # Lumos Tempum
-_a daemon to use your smart lights as aid for your circadian rhythm_
+_a daemon to use your smart lights as aid for your circadian rhythm. Your suprachiasmatic nucleus will thank you._
 
 **SIDE NOTE FOR ALL GITHUB NEWBIES: FORKING IS NOT A BACKUP FEATURE**
-Do not do it. If you want to avoid "loosing" this repo, star it, clone it or bookmark it.
-Forking is only used if you want to extend the code.
+
+Do **not** do it. If you want to avoid "loosing" this repo, star it, clone it or bookmark it.
+Forking is only used if you want to *extend* the code.
 
 ## Description
 This software controls your smart lights in order to mimic the optimal daylight rhythm for your (human) body.
@@ -17,9 +18,10 @@ This project does not support daylight saving time yet, because i think DST was 
 I do not have to optimal light settings yet, but i will provide them once i know them.
 
 ## Requirements
-* Smart bulbs. Currently either Zigbee based ones ([Osram Lightify](https://www.osram.com/lightify), [Philips Hue](http://www2.meethue.com/en-us)) or LIFX.
-* If you use the Zigbee ones, you need also a Philips Hue hub (for now). I recommend to buy the newer model.
+* Smart bulbs. Currently either Zigbee based ones ([Osram Lightify](https://www.osram.com/lightify), [Philips Hue](http://www2.meethue.com/en-us)) or [LIFX](https://lifx.com).
 * Some Linux device in your network which runs 24/7 (and can talk to the Philips Hue hub).
+* If you use the Zigbee bulbs, you need also a Philips Hue hub (for now). I recommend to buy the newer model.
+* If you use the LIFX bulbs, you need also a WiFi antenna. Should support 2.4 GHz. I assume you connect your bulbs to the network this antenna represents.
 * Basic Linux terminal skills (for now). You need to sudo at certain points in the installation.
 
 ## How to install
@@ -57,6 +59,7 @@ Consumers increasingly want this as they get increasingly aware of the importanc
 [The dlux research project](http://dlux.cae.drexel.edu/)
 
 ## Roadmap
+* Change csv formatting to `,`
 * pipe errors to status messages (needs testing)
     > just print
     * function is passed as callback argument
