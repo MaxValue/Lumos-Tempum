@@ -105,12 +105,10 @@ while 1:
 	target_brightness, target_temperature = get_light_setting()
 	#subprocess.call(["systemd-notify","--status=Brightness: {:.2%} Temperature: {:.0f}K".format(target_brightness,target_temperature)])
 
+	error_occured = False
 	for technology in technologies.keys():
 		if not technologies[technology].set_both(target_brightness, target_temperature):
 			error_occured = True
-			break
-	else:
-		error_occured = False
 
 	if error_occured:
 		time.sleep(10)
