@@ -16,9 +16,12 @@ def _translate(value, leftMin, leftMax, rightMin, rightMax):
     valueScaled = float(value - leftMin) / float(leftSpan)
     return int( rightMin + (valueScaled * rightSpan) )
 
+def kelvin_mired(kelvin):
+    return 1000000 / kelvin
+
 def set_both(brightness, temperature):
     brightness = _translate(brightness, 0.0, 1.0, 0, 254)
-    temperature = _translate(temperature, 2000, 9000, 500, 153)
+    temperature = kelvin_mired(temperature)
     data = {"bri":brightness, "ct":temperature}
     _send_command(data)
 
@@ -28,7 +31,7 @@ def set_brightness(brightness):
     _send_command(data)
 
 def set_temperature(temperature):
-    temperature = _translate(temperature, 2000, 9000, 500, 153)
+    temperature = kelvin_mired(temperature)
     data = {"ct":temperature}
     _send_command(data)
 
