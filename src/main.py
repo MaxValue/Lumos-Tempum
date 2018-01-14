@@ -81,7 +81,7 @@ for technology in technologies.keys():
 
 times = []
 with open(os.path.expanduser(config.get("GENERAL","schedule_file")), encoding="utf-8") as schedule_file:
-	schedule_file_reader = csv.DictReader(schedule_file, delimiter=';')
+	schedule_file_reader = csv.DictReader(schedule_file)
 	for keyframe in schedule_file_reader:
 		times.append({
 						"Start":time_to_percent(keyframe["Hour"],keyframe["Minute"]),
