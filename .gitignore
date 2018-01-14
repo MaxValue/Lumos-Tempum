@@ -99,8 +99,9 @@ ENV/
 .mypy_cache/
 
 # Hiding the development folders
+/dlux.txt
 /doc
 /experiments
 /old
+/papers
 /tools
-/dlux.txt
