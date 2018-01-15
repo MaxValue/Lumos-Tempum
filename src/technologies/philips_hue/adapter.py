@@ -19,6 +19,10 @@ def _translate(value, leftMin, leftMax, rightMin, rightMax):
 def kelvin_mired(kelvin):
     return 1000000 / kelvin
 
+def set_power(powerstate):
+    data = {"on":powerstate}
+    _send_command(data)
+
 def set_both(brightness, temperature):
     brightness = _translate(brightness, 0.0, 1.0, 0, 254)
     temperature = kelvin_mired(temperature)

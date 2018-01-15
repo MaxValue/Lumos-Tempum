@@ -16,6 +16,17 @@ def _translate(value, leftMin, leftMax, rightMin, rightMax):
     valueScaled = float(value - leftMin) / float(leftSpan)
     return int( rightMin + (valueScaled * rightSpan) )
 
+def set_power(powerstate):
+    try:
+        lifx.set_power_all_lights(power=powerstate, rapid=True)
+    except (lifxlan.errors.InvalidParameterException, lifxlan.errors.WorkflowException, TimeoutError):
+        return False
+    except Exception as e:
+        print("LIFX: "+str(e),flush=True)
+        exit()
+    else:
+        return True
+
 def set_both(brightness, temperature):
     brightness = max(_translate(brightness, 0.0, 1.0, 0, 65535),1)
     temperature = max(2500,temperature)

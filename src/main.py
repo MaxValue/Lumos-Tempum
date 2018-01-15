@@ -23,9 +23,7 @@ def translate(value, leftMin, leftMax, rightMin, rightMax):
 def time_to_percent(hours, minutes):
 	return ((float(hours) * 60 * 60) + (float(minutes) * 60)) / 86400.0
 
-def get_light_setting():
-	current_time = get_time()
-
+def get_light_setting(current_time):
 	next_day = 0.0
 	for i, this_time in enumerate(times):
 		if this_time["Start"] > current_time:
@@ -92,6 +90,9 @@ times = sorted(times, key=lambda keyframe: keyframe["Start"])
 
 heartbeat_time = config.getint("GENERAL", "heartbeat_time")
 
+wakeup_start = time_to_percent(*config.get("GENERAL", "lightsON_time_start", fallback="42:00").split(":"))
+wakeup_end = time_to_percent(*config.get("GENERAL", "lightsON_time_end", fallback="42:00").split(":"))
+
 error_occured = False
 
 log_this("entering loop")
@@ -102,11 +103,20 @@ while 1:
 		os.remove(os.path.join(config_folder,"LUMOSTEMPUM.STOP"))
 		quit()
 
-	target_brightness, target_temperature = get_light_setting()
+	current_time = get_time()
+	if current_time >= wakeup_start and current_time <= wakeup_end:
+		set_on = True
+	else:
+		set_on = False
+	target_brightness, target_temperature = get_light_setting(current_time)
 	#subprocess.call(["systemd-notify","--status=Brightness: {:.2%} Temperature: {:.0f}K".format(target_brightness,target_temperature)])
 
 	error_occured = False
 	for technology in technologies.keys():
+		if set_on:
+			log_this("force light turn on")
+			if not technologies[technology].set_power(True):
+				error_occured = True
 		if not technologies[technology].set_both(target_brightness, target_temperature):
 			error_occured = True
 
