@@ -5,7 +5,10 @@
 import lifxlan
 
 def init(config_values):
-    pass
+    global lifx, last_brightness, last_temperature
+    last_brightness = 65535
+    last_temperature = 4000
+    lifx = lifxlan.LifxLAN()
 
 def _translate(value, leftMin, leftMax, rightMin, rightMax):
     leftSpan = leftMax - leftMin
@@ -17,11 +20,7 @@ def set_both(brightness, temperature):
     brightness = max(_translate(brightness, 0.0, 1.0, 0, 65535),1)
     temperature = max(2500,temperature)
     try:
-        lifx = lifxlan.LifxLAN()
-        devices = lifx.get_lights()
-        for d in devices:
-            d.set_brightness(brightness)
-            d.set_colortemp(temperature)
+        lifx.set_color_all_lights([0,0,brightness,temperature],duration=400,rapid=True)
     except (lifxlan.errors.InvalidParameterException, lifxlan.errors.WorkflowException, TimeoutError):
         return False
     except Exception as e:
@@ -30,12 +29,11 @@ def set_both(brightness, temperature):
     else:
         return True
 def set_brightness(brightness):
+    global last_brightness
     brightness = max(_translate(brightness, 0.0, 1.0, 0, 65535),1)
     try:
-        lifx = lifxlan.LifxLAN()
-        devices = lifx.get_lights()
-        for d in devices:
-            d.set_brightness(brightness)
+        lifx.set_color_all_lights([0,0,brightness,last_temperature],duration=400,rapid=True)
+        last_brightness = brightness
     except (lifxlan.errors.InvalidParameterException, lifxlan.errors.WorkflowException, TimeoutError):
         return False
     except Exception as e:
@@ -44,12 +42,11 @@ def set_brightness(brightness):
     else:
         return True
 def set_temperature(temperature):
+    global last_temperature
     temperature = max(2500,temperature)
     try:
-        lifx = lifxlan.LifxLAN()
-        devices = lifx.get_lights()
-        for d in devices:
-            d.set_colortemp(temperature)
+        lifx.set_color_all_lights([0,0,last_brightness,temperature],duration=400,rapid=True)
+        last_temperature = temperature
     except (lifxlan.errors.InvalidParameterException, lifxlan.errors.WorkflowException, TimeoutError):
         return False
     except Exception as e:
