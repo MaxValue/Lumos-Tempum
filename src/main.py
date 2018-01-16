@@ -114,7 +114,6 @@ while 1:
 	error_occured = False
 	for technology in technologies.keys():
 		if set_on:
-			log_this("force light turn on")
 			if not technologies[technology].set_power(True):
 				error_occured = True
 		if not technologies[technology].set_both(target_brightness, target_temperature):
