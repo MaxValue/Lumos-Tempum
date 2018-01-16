@@ -59,7 +59,6 @@ Consumers increasingly want this as they get increasingly aware of the importanc
 [The dlux research project](http://dlux.cae.drexel.edu/)
 
 ## Roadmap
-* Change csv formatting to `,`
 * pipe errors to status messages (needs testing)
     > just print
     * function is passed as callback argument
