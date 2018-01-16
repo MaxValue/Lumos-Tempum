@@ -5,10 +5,7 @@ After=network.target
 [Service]
 WorkingDirectory=/opt/lumostempum
 ExecStart=/opt/lumostempum/main.py
-ExecReload=/usr/bin/touch /home/@i/.config/lumostempum/LUMOSTEMPUM.STOP;/opt/lumostempum/main.py
-ExecStop=/usr/bin/touch /home/@i/.config/lumostempum/LUMOSTEMPUM.STOP
 NotifyAccess=all
-Restart=on-failure
 Type=simple
 User=%i
 
