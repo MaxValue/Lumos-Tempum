@@ -18,7 +18,7 @@ def _translate(value, leftMin, leftMax, rightMin, rightMax):
 
 def set_power(powerstate):
 	try:
-		lifx.set_power_all_lights(power=powerstate, rapid=True)
+		lifx.set_power_all_lights(power_level=powerstate, rapid=True)
 	except (lifxlan.errors.InvalidParameterException, lifxlan.errors.WorkflowException, TimeoutError):
 		return False
 	except Exception as e:
